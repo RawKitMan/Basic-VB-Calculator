@@ -1,9 +1,12 @@
 ﻿
+Imports System.Text.RegularExpressions
+
 Public Class Calculator
     Dim leftNumber As String = ""
     Dim rightNumber As String = ""
     Dim numOperator As String = ""
     Dim resultCounter As Integer = 0
+    Dim numPattern As Regex = New Regex("^\d+(\.\d+)?$")
     Dim cjCalc As New myCalculator(leftNumber, rightNumber, numOperator)
 
     Private Sub btnZero_Click(sender As Object, e As EventArgs) _
@@ -48,49 +51,59 @@ Public Class Calculator
     End Sub
 
 
-    'Be sure to account for no inputs and put up an error message box if no input is provided
+    'Our operator buttons on the Calculator GUI
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
-        If (Not (textInput.Text Is "") And cjCalc.lNumber Is "") Then
-            'create the setLeft function and replace it here
-            cjCalc.SetLeft(textInput.Text)
-            cjCalc.SetOperator(btnAdd.Text)
-            textInput.Text = ""
-        End If
-
+        SetItems(textInput.Text, btnAdd.Text)
     End Sub
 
     Private Sub BtnSubtract_Click(sender As Object, e As EventArgs) Handles btnSubtract.Click
-        If (Not (textInput.Text Is "") And cjCalc.lNumber Is "") Then
-            'create the setLeft function and replace it here
-            cjCalc.SetLeft(textInput.Text)
-            cjCalc.SetOperator(btnSubtract.Text)
-            textInput.Text = ""
-        End If
+        SetItems(textInput.Text, btnSubtract.Text)
     End Sub
 
     Private Sub BtnMultiply_Click(sender As Object, e As EventArgs) Handles btnMultiply.Click
-        If (Not (textInput.Text Is "") And cjCalc.lNumber Is "") Then
-            'create the setLeft function and replace it here
-            cjCalc.SetLeft(textInput.Text)
-            cjCalc.SetOperator(btnMultiply.Text)
-            textInput.Text = ""
-        End If
+        SetItems(textInput.Text, btnMultiply.Text)
     End Sub
 
     Private Sub BtnDivide_Click(sender As Object, e As EventArgs) Handles btnDivide.Click
-        If (Not (textInput.Text Is "") And cjCalc.lNumber Is "") Then
-            'create the setLeft function and replace it here
-            cjCalc.SetLeft(textInput.Text)
-            cjCalc.SetOperator(btnDivide.Text)
-            textInput.Text = ""
+        SetItems(textInput.Text, btnDivide.Text)
+    End Sub
+
+    'The only symbols on a keyboard we want to use if someone is typing the expression is our math operators. So
+    'lets capture those events and have them do the same thing the operator buttons in our GUI do.
+
+    Public Sub BtnEquals_Click(sender As Object, e As EventArgs) Handles btnEquals.Click
+        SetEquals()
+    End Sub
+
+    Private Sub TextInput_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles textInput.KeyPress
+        If e.KeyChar = Convert.ToChar(43) Then
+            SetItems(textInput.Text, btnAdd.Text)
+            e.Handled = True
+        ElseIf e.KeyChar = Convert.ToChar(45) Then
+            SetItems(textInput.Text, btnSubtract.Text)
+            e.Handled = True
+        ElseIf e.KeyChar = Convert.ToChar(42) Then
+            SetItems(textInput.Text, btnMultiply.Text)
+            e.Handled = True
+        ElseIf e.KeyChar = Convert.ToChar(47) Then
+            SetItems(textInput.Text, btnDivide.Text)
+            e.Handled = True
+        ElseIf e.KeyChar = Convert.ToChar(61) Then
+            SetEquals()
+            e.Handled = True
         End If
     End Sub
 
-
-    Public Sub BtnEquals_Click(sender As Object, e As EventArgs) Handles btnEquals.Click
-        If (Not (textInput.Text Is "") And cjCalc.lNumber) Then
+    Public Sub SetEquals()
+        If (Not (textInput.Text Is "") And cjCalc.lNumber And numPattern.IsMatch(textInput.Text)) Then
             cjCalc.SetRight(textInput.Text)
+        Else
+            resultLabel.Text = "Invalid expression"
+            MsgBox("Invalid Expression")
+            cjCalc.SetLeft("")
+            cjCalc.SetOperator("")
         End If
+
         If (Not (cjCalc.lNumber Is "") And Not (cjCalc.rNumber Is "") And Not (cjCalc.numOper Is "")) Then
             cjCalc.calculate()
             resultLabel.Text = cjCalc.lNumber + " " + cjCalc.numOper + " " + cjCalc.rNumber + " = " + cjCalc.getResult().ToString()
@@ -100,11 +113,24 @@ Public Class Calculator
             End If
             cjCalc.SetLeft("")
             cjCalc.SetRight("")
-
         End If
 
         textInput.Text = ""
+    End Sub
 
+    Public Sub SetItems(ByVal num As String, oper As String)
+
+        If (Not (textInput.Text Is "") And cjCalc.lNumber Is "") Then
+            If (numPattern.IsMatch(num)) Then
+                cjCalc.SetLeft(num)
+                cjCalc.SetOperator(oper)
+            Else
+                MsgBox("Invalid Expression")
+                resultLabel.Text = "Invalid expression"
+            End If
+        End If
+
+        textInput.Text = ""
     End Sub
 
 

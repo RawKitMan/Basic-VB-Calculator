@@ -42,6 +42,7 @@ Partial Class Calculator
         Me.prevResultLabel = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'btnOne
@@ -174,9 +175,9 @@ Partial Class Calculator
         'textInput
         '
         Me.textInput.Font = New System.Drawing.Font("Trebuchet MS", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.textInput.Location = New System.Drawing.Point(12, 38)
+        Me.textInput.Location = New System.Drawing.Point(28, 78)
         Me.textInput.Name = "textInput"
-        Me.textInput.Size = New System.Drawing.Size(352, 96)
+        Me.textInput.Size = New System.Drawing.Size(295, 71)
         Me.textInput.TabIndex = 14
         Me.textInput.Text = ""
         '
@@ -227,13 +228,23 @@ Partial Class Calculator
         Me.Label4.TabIndex = 19
         Me.Label4.Text = "Previous Results"
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(25, 47)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(39, 13)
+        Me.Label1.TabIndex = 20
+        Me.Label1.Text = "Label1"
+        '
         'Calculator
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Silver
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
-        Me.ClientSize = New System.Drawing.Size(400, 480)
+        Me.ClientSize = New System.Drawing.Size(379, 480)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.prevResultLabel)
@@ -282,4 +293,5 @@ Partial Class Calculator
     Friend WithEvents prevResultLabel As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents Label4 As Label
+    Friend WithEvents Label1 As Label
 End Class
