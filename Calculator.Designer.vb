@@ -43,6 +43,8 @@ Partial Class Calculator
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.btnDecimal = New System.Windows.Forms.Button()
+        Me.btnNegPos = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnOne
@@ -237,6 +239,24 @@ Partial Class Calculator
         Me.Label1.TabIndex = 20
         Me.Label1.Text = "Label1"
         '
+        'btnDecimal
+        '
+        Me.btnDecimal.Location = New System.Drawing.Point(175, 264)
+        Me.btnDecimal.Name = "btnDecimal"
+        Me.btnDecimal.Size = New System.Drawing.Size(75, 23)
+        Me.btnDecimal.TabIndex = 21
+        Me.btnDecimal.Text = "."
+        Me.btnDecimal.UseVisualStyleBackColor = True
+        '
+        'btnNegPos
+        '
+        Me.btnNegPos.Location = New System.Drawing.Point(13, 266)
+        Me.btnNegPos.Name = "btnNegPos"
+        Me.btnNegPos.Size = New System.Drawing.Size(75, 23)
+        Me.btnNegPos.TabIndex = 22
+        Me.btnNegPos.Text = "-/+"
+        Me.btnNegPos.UseVisualStyleBackColor = True
+        '
         'Calculator
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -244,6 +264,8 @@ Partial Class Calculator
         Me.BackColor = System.Drawing.Color.Silver
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.ClientSize = New System.Drawing.Size(379, 480)
+        Me.Controls.Add(Me.btnNegPos)
+        Me.Controls.Add(Me.btnDecimal)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
@@ -294,4 +316,6 @@ Partial Class Calculator
     Friend WithEvents Label3 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label1 As Label
+    Friend WithEvents btnDecimal As Button
+    Friend WithEvents btnNegPos As Button
 End Class

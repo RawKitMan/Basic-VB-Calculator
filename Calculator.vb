@@ -6,7 +6,7 @@ Public Class Calculator
     Dim rightNumber As String = ""
     Dim numOperator As String = ""
     Dim resultCounter As Integer = 0
-    Dim numPattern As Regex = New Regex("^\d+(\.\d+)?$")
+    Dim numPattern As Regex = New Regex("^-?\d+(\.\d+)?$")
     Dim cjCalc As New myCalculator(leftNumber, rightNumber, numOperator)
 
     Private Sub btnZero_Click(sender As Object, e As EventArgs) _
@@ -50,6 +50,14 @@ Public Class Calculator
         textInput.Text = textInput.Text & btnNine.Text
     End Sub
 
+    Private Sub BtnDecimal_Click(sender As Object, e As EventArgs) Handles btnDecimal.Click
+        If (textInput.Text = "") Then
+            textInput.Text = "0."
+        Else
+            textInput.Text = textInput.Text & "."
+        End If
+
+    End Sub
 
     'Our operator buttons on the Calculator GUI
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
@@ -68,12 +76,12 @@ Public Class Calculator
         SetItems(textInput.Text, btnDivide.Text)
     End Sub
 
-    'The only symbols on a keyboard we want to use if someone is typing the expression is our math operators. So
-    'lets capture those events and have them do the same thing the operator buttons in our GUI do.
-
     Public Sub BtnEquals_Click(sender As Object, e As EventArgs) Handles btnEquals.Click
         SetEquals()
     End Sub
+
+    'The only symbols on a keyboard we want to use if someone is typing the expression is our math operators. So
+    'lets capture those events and have them do the same thing the operator buttons in our GUI do. 
 
     Private Sub TextInput_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles textInput.KeyPress
         If e.KeyChar = Convert.ToChar(43) Then
@@ -91,18 +99,27 @@ Public Class Calculator
         ElseIf e.KeyChar = Convert.ToChar(61) Then
             SetEquals()
             e.Handled = True
+        ElseIf e.KeyChar = Convert.ToChar(13) Then
+            SetEquals()
+            e.Handled = True
         End If
     End Sub
 
     Public Sub SetEquals()
-        If (Not (textInput.Text Is "") And cjCalc.lNumber And numPattern.IsMatch(textInput.Text)) Then
-            cjCalc.SetRight(textInput.Text)
+
+        If numPattern.IsMatch(textInput.Text) Then
+            If (cjCalc.numOper.Equals("/") And Double.Parse(textInput.Text) = 0) Then
+                MsgBox("Cannot divide by zero")
+                Reset()
+            ElseIf (Not (textInput.Text Is "") And cjCalc.lNumber And numPattern.IsMatch(textInput.Text)) Then
+                cjCalc.SetRight(textInput.Text)
+            End If
+
         Else
-            resultLabel.Text = "Invalid expression"
             MsgBox("Invalid Expression")
-            cjCalc.SetLeft("")
-            cjCalc.SetOperator("")
+            Reset()
         End If
+
 
         If (Not (cjCalc.lNumber Is "") And Not (cjCalc.rNumber Is "") And Not (cjCalc.numOper Is "")) Then
             cjCalc.calculate()
@@ -111,8 +128,8 @@ Public Class Calculator
                 resultCounter += 1
                 prevResultLabel.Text = cjCalc.getPreviousResult(resultCounter - 1)
             End If
-            cjCalc.SetLeft("")
-            cjCalc.SetRight("")
+
+            Reset()
         End If
 
         textInput.Text = ""
@@ -126,14 +143,27 @@ Public Class Calculator
                 cjCalc.SetOperator(oper)
             Else
                 MsgBox("Invalid Expression")
-                resultLabel.Text = "Invalid expression"
+                Reset()
             End If
         End If
 
         textInput.Text = ""
     End Sub
 
+    Public Sub Reset()
+        cjCalc.SetLeft("")
+        cjCalc.SetRight("")
+        cjCalc.SetOperator("")
+    End Sub
 
+    Private Sub BtnNegPos_Click(sender As Object, e As EventArgs) Handles btnNegPos.Click
+        Console.WriteLine(textInput.Text.IndexOf("-") = 0)
+        If (textInput.Text Is "") Then
+            textInput.Text = "-"
+        ElseIf (textInput.Text.IndexOf("-") = 0) Then
+            textInput.Text = textInput.Text.Replace("-", "")
+        End If
+    End Sub
 End Class
 
 Public Class myCalculator
@@ -187,7 +217,6 @@ Public Class myCalculator
     Public Function getPreviousResult(ByVal index As Integer)
         Return Results(index)
     End Function
-
 
 End Class
 
