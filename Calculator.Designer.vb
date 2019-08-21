@@ -208,10 +208,11 @@ Partial Class CalculatorOne
         '
         Me.prevResultLabel.AutoSize = True
         Me.prevResultLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.prevResultLabel.Location = New System.Drawing.Point(24, 436)
+        Me.prevResultLabel.Location = New System.Drawing.Point(80, 438)
         Me.prevResultLabel.Name = "prevResultLabel"
-        Me.prevResultLabel.Size = New System.Drawing.Size(0, 20)
+        Me.prevResultLabel.Size = New System.Drawing.Size(170, 20)
         Me.prevResultLabel.TabIndex = 17
+        Me.prevResultLabel.Text = "No Previous Results"
         '
         'Label3
         '

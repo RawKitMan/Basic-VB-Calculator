@@ -181,7 +181,7 @@ Public Class CalculatorOne
             cjCalc.calculate()
 
             'Grab the result and make a check that it falls within the Double data type number range
-            Dim totalAnswer As Double = cjCalc.getResult()
+            Dim totalAnswer As Double = Double.Parse(cjCalc.getResult())
             If ((totalAnswer < Double.MinValue) Or (totalAnswer > Double.MaxValue)) Then
                 MsgBox("The answer is out of range")
                 Reset()
@@ -189,19 +189,24 @@ Public Class CalculatorOne
                 'If it does, show the answer
             Else
                 resultLabel.Text = cjCalc.lNumber + " " + cjCalc.numOper + " " + cjCalc.rNumber + " = " + totalAnswer.ToString()
-                'Since we get a result, the counter goes up.
-                resultCounter += 1
+
             End If
 
 
             'Our array only holds up to 10 results, so if our counter goes up to 10, we need to reset
             'We also do this in the Calculator class when we input the solution into the array.
             'But the main goals is to get the element that was placed before the current result
+
+            'Since we get a result, the counter goes up.
+            resultCounter += 1
+
             If (resultCounter = 10) Then
                 prevResultLabel.Text = cjCalc.getPreviousResult(9)
                 resultCounter = 0
+            ElseIf ((Not (cjCalc.results(0).Equals(""))) And (cjCalc.results(1) Is Nothing)) Then
+                prevResultLabel.Text = "No Previous Results"
             Else
-                prevResultLabel.Text = cjCalc.getPreviousResult(resultCounter - 1)
+                prevResultLabel.Text = cjCalc.getPreviousResult(resultCounter - 2)
             End If
 
             'Once everything looks fine and dandy, we reset the calculator
@@ -256,7 +261,7 @@ Public Class myCalculator
     Public numOper As String
 
     'The array to hold all the results we get for our calculations
-    Public results(10) As Double
+    Public results(9) As String
 
     'Our index to keep track of where our results are placed in the array
     Public resultIndex As Integer = 0
@@ -292,13 +297,13 @@ Public Class myCalculator
     Public Sub calculate()
 
         If (numOper Is "+") Then
-            results(resultIndex) = Double.Parse(lNumber) + Double.Parse(rNumber)
+            results(resultIndex) = (Double.Parse(lNumber) + Double.Parse(rNumber)).ToString()
         ElseIf (numOper Is "-") Then
-            results(resultIndex) = Double.Parse(lNumber) - Double.Parse(rNumber)
+            results(resultIndex) = (Double.Parse(lNumber) - Double.Parse(rNumber)).ToString()
         ElseIf (numOper Is "*") Then
-            results(resultIndex) = Double.Parse(lNumber) * Double.Parse(rNumber)
+            results(resultIndex) = (Double.Parse(lNumber) * Double.Parse(rNumber)).ToString()
         ElseIf (numOper Is "/") Then
-            results(resultIndex) = Double.Parse(lNumber) / Double.Parse(rNumber)
+            results(resultIndex) = (Double.Parse(lNumber) / Double.Parse(rNumber)).ToString()
         End If
 
         resultIndex += 1
@@ -323,7 +328,8 @@ Public Class myCalculator
     'Calls the element at the designated index. For our purposes, it's the one that was stored
     'prior to the current calculation being done.
     Public Function getPreviousResult(ByVal index As Integer)
-        Return Results(index)
+        Console.WriteLine(index)
+        Return results(index)
     End Function
 
 End Class
